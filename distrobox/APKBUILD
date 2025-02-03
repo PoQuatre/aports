@@ -1,0 +1,29 @@
+# Contributor: Bart Ribbers <bribbers@disroot.org>
+# Maintainer: Bart Ribbers <bribbers@disroot.org>
+pkgname=distrobox
+pkgver=1.8.1.2
+pkgrel=1
+pkgdesc="Use any Linux distribution inside your terminal"
+url="https://distrobox.it/"
+# s390x, loongarch64: blocked by podman
+arch="noarch !s390x !loongarch64"
+license="GPL-3.0-only"
+depends="podman"
+subpackages="$pkgname-doc $pkgname-bash-completion $pkgname-zsh-completion"
+source="$pkgname-$pkgver.tar.gz::https://github.com/PoQuatre/distrobox/archive/refs/heads/assemble-unshare-groups-support.tar.gz"
+install="$pkgname.post-upgrade"
+options="!check" # No tests
+
+package() {
+	cd "$srcdir/$pkgname-assemble-unshare-groups-support"
+
+	./install --prefix "$pkgdir"/usr
+
+	install -dm0755 "$pkgdir"/usr/share/doc/distrobox
+	install -m 0644 docs/*.md "$pkgdir"/usr/share/doc/distrobox
+}
+
+
+sha512sums="
+73378dc51bb82de58d50beab273f5cfb23e0bab65d9897e710bf1da2072fb8db4f3d367ebe414f4113803db4314377042689ae37848b0de60373816f0e03070d  distrobox-1.8.1.2.tar.gz
+"

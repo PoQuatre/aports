@@ -1,0 +1,5 @@
+aports
+
+$mirror/$version/main
+$mirror/$version/community
+$mirror/$version/testing

@@ -1,0 +1,20 @@
+# Contributor: Mateo LE FLEM <mle-flem@student.42.fr>
+# Maintainer: Mateo LE FLEM <mle-flem@student.42.fr>
+pkgname=banana-cursors
+pkgver=2.0.0
+pkgrel=0
+pkgdesc="The banana cursor."
+url="https://github.com/ful1e5/banana-cursor"
+arch="all"
+license="GPL-3.0-or-later"
+options="!check"
+source="$pkgname-$pkgver.tar.xz::https://github.com/ful1e5/banana-cursor/releases/download/v$pkgver/Banana.tar.xz"
+
+package() {
+	cd "$srcdir/Banana"
+	find cursors -type f -exec install -Dm 755 "{}" "$pkgdir/usr/share/icons/Banana/{}" \;
+}
+
+sha512sums="
+d3a5875c19930a6794864b08de0fd4068e87c3b3971197db341b3b8b8dbc5249ea254c12c76e93e6450e423500a4f85fd272b69790986fa71983e3dade982f7b  banana-cursors-2.0.0.tar.xz
+"
