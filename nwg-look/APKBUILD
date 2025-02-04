@@ -1,0 +1,27 @@
+# Contributor:
+# Maintainer:
+pkgname=nwg-look
+pkgver=1.0.2
+pkgrel=0
+pkgdesc="GTK3 settings editor adapted to work in the wlroots environment "
+url="https://github.com/nwg-piotr/nwg-look"
+arch="all"
+license="MIT"
+depends="gtk+3.0 xcur2png glib gsettings-desktop-schemas cairo cairo-gobject pango"
+makedepends="make go glib-dev cairo-dev pango-dev gtk+3.0-dev"
+subpackages="$pkgname-doc"
+source="$pkgname-$pkgver.tar.gz::https://github.com/nwg-piotr/nwg-look/archive/refs/tags/v$pkgver.tar.gz"
+options="!check net" # No tests
+builddir="$srcdir/$pkgname-$pkgver"
+
+build() {
+	make build
+}
+
+package() {
+	make install PREFIX="$pkgdir/usr"
+}
+
+sha512sums="
+dcc184c9079c78f484c786c54ac8672f178cfd792b08de97081b0ee80f80856235436a9b995e6fa348e24c3184d9ab1956357f41ba3e99719c76ead82824e1f5  nwg-look-1.0.2.tar.gz
+"
