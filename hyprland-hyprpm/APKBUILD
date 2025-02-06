@@ -2,7 +2,7 @@
 maintainer="Zach DeCook <zachdecook@librem.one>"
 pkgname=hyprland-hyprpm
 pkgver=0.47.2
-pkgrel=0
+pkgrel=1
 _commit="882f7ad7d2bbfc7440d0ccaef93b1cdd78e8e3ff"
 pkgdesc="Independent, highly customizable, dynamic tiling Wayland compositor that doesn't sacrifice on its looks."
 url="https://hyprland.org"
@@ -12,7 +12,7 @@ source="
 	https://github.com/hyprwm/Hyprland/archive/v$pkgver/Hyprland-v$pkgver.tar.gz
 	"
 builddir="$srcdir/Hyprland-$pkgver"
-depends="!hyprland"
+depends="!hyprland cmake meson cpio pkgconf"
 makedepends="
 	aquamarine-dev>=0.4.5
 	cairo-dev
