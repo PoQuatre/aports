@@ -1,0 +1,99 @@
+# Contributor: Zach DeCook <zachdecook@librem.one>
+maintainer="Zach DeCook <zachdecook@librem.one>"
+pkgname=hyprland-hyprpm
+pkgver=0.47.2
+pkgrel=0
+_commit="882f7ad7d2bbfc7440d0ccaef93b1cdd78e8e3ff"
+pkgdesc="Independent, highly customizable, dynamic tiling Wayland compositor that doesn't sacrifice on its looks."
+url="https://hyprland.org"
+arch="all"
+license="BSD-3-Clause"
+source="
+	https://github.com/hyprwm/Hyprland/archive/v$pkgver/Hyprland-v$pkgver.tar.gz
+	"
+builddir="$srcdir/Hyprland-$pkgver"
+depends="!hyprland"
+makedepends="
+	aquamarine-dev>=0.4.5
+	cairo-dev
+	cmake
+	elogind-dev
+	glaze
+	glaze-dev
+	hyprcursor-dev>=0.1.9
+	hyprgraphics-dev>=0.1.1
+	hyprland-protocols>=0.6.0
+	hyprlang-dev>=0.3.2
+	hyprutils-dev>=0.2.3
+	hyprwayland-scanner>=0.3.10
+	jq
+	libdrm-dev
+	libinput-dev
+	libliftoff-dev
+	libxcb-dev
+	libxcursor-dev
+	libxkbcommon-dev
+	mesa-dev
+	meson
+	ninja
+	pango-dev
+	pixman-dev
+	re2-dev
+	tomlplusplus-dev
+	udis86-git-dev
+	vulkan-loader-dev
+	wayland-dev
+	wayland-protocols
+	xcb-util-errors-dev
+	xcb-util-image-dev
+	xcb-util-renderutil-dev
+	xcb-util-wm-dev
+	xkeyboard-config-dev
+	xwayland-dev
+	"
+subpackages="
+	$pkgname-doc
+	$pkgname-dev
+	$pkgname-wallpapers::noarch
+	$pkgname-bash-completion
+	$pkgname-fish-completion
+	$pkgname-zsh-completion
+	"
+
+prepare() {
+	default_prepare
+	# Set some variables in version.h.in
+	sed -i "s/@HASH@/$_commit/" "$builddir"/src/version.h.in
+	sed -i "s/@BRANCH@/build-alpine/" "$builddir"/src/version.h.in
+	_patches="$(printf %s "$source" | grep '.patch$' | tr '\n' ' ')"
+	if test "$_patches"; then
+		_message="with patches: $_patches"
+	else
+		_message="without patches"
+	fi
+	sed -i "s~@MESSAGE@~$_message~" "$builddir"/src/version.h.in
+	sed -i "s/@TAG@/v$pkgver/" "$builddir"/src/version.h.in
+}
+
+build() {
+	abuild-meson . output
+	meson compile -C output
+}
+
+check() {
+	meson test --no-rebuild -C output
+}
+
+package() {
+	DESTDIR="$pkgdir" meson install --no-rebuild -C output
+}
+
+wallpapers() {
+	pkgdesc="Wallpapers for Hyprland"
+
+	amove usr/share/hypr/wall*.png
+}
+
+sha512sums="
+b34f8ddbe2a940588aceae21e987bdee119e1cb438723208bb16609b304984acee8d5ba7ff1dd715b49f9c7c93eb0f65e60677a526c9f2ce542dcb96350e93da  Hyprland-v0.47.2.tar.gz
+"
